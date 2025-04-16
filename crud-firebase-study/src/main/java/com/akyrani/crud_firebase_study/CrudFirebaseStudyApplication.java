@@ -6,20 +6,19 @@ import com.google.firebase.FirebaseOptions;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 
 @SpringBootApplication
 public class CrudFirebaseStudyApplication {
 
 	public static void main(String[] args) throws IOException {
-		ClassLoader classLoader = CrudFirebaseStudyApplication.class.getClassLoader();
+		InputStream serviceAccount = CrudFirebaseStudyApplication.class
+				.getClassLoader()
+				.getResourceAsStream("serviceAccountKey.json");
 
-		File file = new File(classLoader.getResource("serviceAccountKey.json").getFile());
-
-		FileInputStream serviceAccount =
-				new FileInputStream(file.getAbsolutePath());
+		if (serviceAccount == null) {
+			throw new FileNotFoundException("Arquivo serviceAccountKey.json não encontrado no classpath!");
+		}
 
 		FirebaseOptions options = new FirebaseOptions.Builder()
 				.setCredentials(GoogleCredentials.fromStream(serviceAccount))
@@ -27,6 +26,7 @@ public class CrudFirebaseStudyApplication {
 				.build();
 
 		FirebaseApp.initializeApp(options);
+
 
 
 		SpringApplication.run(CrudFirebaseStudyApplication.class, args);
