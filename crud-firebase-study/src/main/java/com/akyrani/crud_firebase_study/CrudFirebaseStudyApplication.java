@@ -20,7 +20,7 @@ public class CrudFirebaseStudyApplication {
 			throw new FileNotFoundException("Arquivo serviceAccountKey.json não encontrado no classpath!");
 		}
 
-		FirebaseOptions options = new FirebaseOptions.Builder()
+		FirebaseOptions options = FirebaseOptions.builder()
 				.setCredentials(GoogleCredentials.fromStream(serviceAccount))
 				.setDatabaseUrl("https://crud-firebase-api-56e71-default-rtdb.firebaseio.com")
 				.build();
